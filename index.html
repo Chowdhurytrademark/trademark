@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP PROTECT | INTERNATIONAL TRADEMARK</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #12281e; color: #2c3531; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 15px; }
+        .main-wrapper { width: 100%; max-width: 650px; background: #f4f3ee; border-radius: 4px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; }
+        
+        /* Top Nav */
+        .top-nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #dcd8cc; padding-bottom: 15px; margin-bottom: 25px; }
+        .nav-left { font-size: 11px; letter-spacing: 1px; color: #555; font-weight: 600; }
+        .nav-right { display: flex; gap: 8px; align-items: center; }
+        .nav-btn { background: transparent; border: 1px solid #555; color: #2c3531; padding: 6px 12px; font-size: 11px; font-weight: 700; letter-spacing: 1px; cursor: pointer; text-transform: uppercase; }
+        .nav-btn.active { background: #e8e4d5; }
+        .admin-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #555; display: none; }
+
+        /* Header Info */
+        .header-section { text-align: center; margin-bottom: 30px; }
+        .sub-heading { font-size: 9px; letter-spacing: 2px; color: #777; margin-bottom: 8px; text-transform: uppercase; }
+        .main-title { font-family: 'Cinzel', serif; font-size: 32px; color: #a93226; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
+        .database-sub { font-size: 10px; letter-spacing: 1.5px; color: #555; margin-bottom: 20px; font-weight: 600; }
+        .registry-desk { font-size: 11px; letter-spacing: 1px; color: #444; border-top: 1px solid #dcd8cc; border-bottom: 1px solid #dcd8cc; padding: 8px 0; display: inline-block; width: 100%; position: relative; }
+        .registry-desk span { color: #a93226; font-weight: bold; }
+
+        /* Search Section */
+        .search-card { border: 1px solid #dcd8cc; background: #ffffff; padding: 20px; margin-bottom: 25px; }
+        .search-title { font-size: 10px; letter-spacing: 1.5px; color: #666; margin-bottom: 12px; text-transform: uppercase; }
+        .search-input { width: 100%; padding: 14px; border: 1px solid #b5b0a1; background: #faf8f5; font-size: 13px; color: #333; outline: none; margin-bottom: 12px; }
+        .action-btn { width: 100%; background: #19382b; color: #ffffff; border: none; padding: 14px; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; cursor: pointer; margin-bottom: 10px; text-transform: uppercase; }
+        .save-main-btn { background: #19382b; font-size: 13px; margin-top: 10px; }
+        .clear-btn { background: transparent; color: #2c3531; border: 1px solid #b5b0a1; }
+        .search-hint { font-size: 11px; color: #666; margin-top: 10px; line-height: 1.4; }
+
+        /* Result Section */
+        .result-container { border: 1px solid #dcd8cc; background: #ffffff; padding: 20px; margin-top: 20px; }
+        .result-top-header { display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
+        .brand-logo-img { width: 70px; height: 70px; object-fit: cover; border: 1px solid #ddd; background: #000; }
+        .brand-heading h3 { font-family: 'Cinzel', serif; font-size: 20px; color: #2c3531; margin-bottom: 4px; }
+        .brand-heading p { font-size: 11px; color: #a93226; font-weight: 700; letter-spacing: 1px; }
+        .status-badge { display: inline-block; border: 1px solid #c8d6ce; background: #f2f7f4; color: #276749; padding: 6px 12px; font-size: 10px; font-weight: bold; letter-spacing: 1px; margin-bottom: 15px; text-transform: uppercase; }
+        .info-box { border: 1px solid #e2ded0; background: #faf8f5; padding: 12px; margin-bottom: 10px; }
+        .info-box label { display: block; font-size: 9px; letter-spacing: 1px; color: #777; margin-bottom: 4px; text-transform: uppercase; }
+        .info-box span { font-size: 13px; color: #2c3531; font-weight: 500; }
+        .legal-notice { font-size: 12px; color: #555; line-height: 1.5; margin-top: 20px; margin-bottom: 20px; border-bottom: 1px solid #dcd8cc; padding-bottom: 20px; }
+        .certificate-section { margin-top: 15px; text-align: center; }
+        .certificate-title { font-size: 10px; letter-spacing: 2px; color: #555; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
+        .cert-link { font-size: 12px; color: #a93226; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 12px; }
+        .cert-img-preview { width: 100%; max-height: 400px; object-fit: contain; border: 1px solid #ccc; background: #fff; padding: 5px; }
+
+        /* Admin Action Buttons on Cards */
+        .admin-actions { display: flex; gap: 10px; margin-top: 15px; border-top: 1px dashed #dcd8cc; padding-top: 15px; }
+        .edit-card-btn { flex: 1; background: #d4ac0d; color: #fff; border: none; padding: 8px; font-size: 11px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        .delete-card-btn { flex: 1; background: #a93226; color: #fff; border: none; padding: 8px; font-size: 11px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+
+        /* Modal Login */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 999; padding: 15px; }
+        .modal-box { background: #f4f3ee; width: 100%; max-width: 400px; padding: 25px; border: 1px solid #dcd8cc; position: relative; }
+        .modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 18px; cursor: pointer; color: #555; }
+        .modal-box h3 { font-family: 'Cinzel', serif; color: #19382b; margin-bottom: 8px; font-size: 18px; }
+        .modal-box p { font-size: 11px; color: #666; margin-bottom: 20px; }
+        
+        /* Admin Box */
+        .admin-box { border: 1px solid #dcd8cc; background: #ffffff; padding: 20px; margin-top: 20px; text-align: left; display: none; }
+        .admin-box h3 { font-family: 'Cinzel', serif; color: #19382b; margin-bottom: 15px; font-size: 16px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 10px; color: #555; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; background: #faf8f5; font-size: 13px; outline: none; }
+
+        .page-view { display: none; }
+        .page-view.active { display: block; }
+
+        /* Hosting Badge Cleaner */
+        [data-netlify-attribution], .netlify-badge, iframe[src*="netlify"], div:has(> a[href*="netlify"]), a[href*="netlify.com/pp%3Futm_source"], footer a[href*="netlify"] { display: none !important; visibility: hidden !important; opacity: 0 !important; height: 0 !important; width: 0 !important; pointer-events: none !important; position: absolute !important; left: -9999px !important; }
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <!-- Top Nav -->
+        <div class="top-nav">
+            <div class="nav-left">IP / ARCHIVE</div>
+            <div class="nav-right">
+                <button class="nav-btn active" id="navVerify" onclick="switchTab('verify')">Verify</button>
+                <button class="nav-btn" id="navAdd" onclick="switchTab('add')" style="display:none;">+ Add</button>
+                <button class="nav-btn" id="navSettings" onclick="switchTab('settings')" style="display:none;">Settings</button>
+                <button class="nav-btn" id="navAuthBtn" onclick="handleAuthClick()">Login</button>
+                <img id="adminAvatarImg" class="admin-avatar" src="" alt="Admin">
+            </div>
+        </div>
+
+        <!-- VERIFY / SEARCH VIEW -->
+        <div id="view-verify" class="page-view active">
+            <div class="header-section">
+                <div class="sub-heading">Independent Intellectual Property</div>
+                <div class="main-title">IP PROTECT®</div>
+                <div class="database-sub">INTERNATIONAL TRADEMARK DATABASE</div>
+                <div class="registry-desk">RESEARCH DESK <span>01 / REGISTRY</span></div>
+            </div>
+
+            <div class="search-card">
+                <div class="search-title">— 🔍 Search Trademark Database</div>
+                <input type="text" id="searchInput" class="search-input" placeholder="Registration number, brand name, owner...">
+                <button class="action-btn" onclick="searchTrademark()">Search Database</button>
+                <button class="action-btn clear-btn" onclick="clearSearch()">Clear</button>
+                <div class="search-hint">Search by registration number, brand name, owner, class, or jurisdiction.</div>
+            </div>
+
+            <div id="searchResultArea">
+                <div class="result-container" style="text-align:center; padding:25px;">
+                    <div class="search-title" style="margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                        <span>— SEARCH RESULTS</span>
+                        <span style="background:#e8e4d5; border:1px solid #dcd8cc; padding:2px 8px; font-size:9px; color:#444; font-weight:bold;">SEARCH READY</span>
+                    </div>
+                    <div style="font-size:12px; color:#666; font-weight:500; margin-top:10px;">Enter a trademark name or registration number above to verify.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADD / EDIT TRADEMARK VIEW -->
+        <div id="view-add" class="page-view">
+            <div class="admin-box" style="display: block;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h3 id="formTitleText" style="margin:0;">ADD TRADEMARK</h3>
+                    <button onclick="switchTab('verify')" style="background:none; border:none; font-size:16px; cursor:pointer; font-weight:bold;">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label>Registration Number *</label>
+                    <input type="text" id="regNo" placeholder="e.g. 468752">
+                </div>
+                <div class="form-group">
+                    <label>Brand Name *</label>
+                    <input type="text" id="brandName" placeholder="e.g. Hunter Gadgets">
+                </div>
+                <div class="form-group">
+                    <label>Owner Name</label>
+                    <input type="text" id="ownerName" placeholder="e.g. Sorowar Hossain">
+                </div>
+                <div class="form-group">
+                    <label>Class</label>
+                    <input type="text" id="tmClass" placeholder="e.g. Class 25">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="status">
+                        <option value="REGISTERED">Registered</option>
+                        <option value="PENDING">Pending</option>
+                        <option value="EXPIRED">Expired</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Jurisdiction / Country</label>
+                    <input type="text" id="jurisdiction" placeholder="e.g. Bangladesh" value="Bangladesh">
+                </div>
+                <div class="form-group">
+                    <label>Registration Date</label>
+                    <input type="text" id="regDate" placeholder="e.g. Sep 24, 2024">
+                </div>
+                <div class="form-group">
+                    <label>Expiry Date</label>
+                    <input type="text" id="expiryDate" placeholder="e.g. Oct 30, 2035">
+                </div>
+                <div class="form-group">
+                    <label>Legal Notice / Disclaimer</label>
+                    <textarea id="legalNoticeText" rows="3">All trademarks, logos, and brand names belong to their respective owners. Unauthorized copying, misuse, or impersonation is prohibited.</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Brand Logo Image (Optional)</label>
+                    <input type="file" id="logoFile" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>Trademark Certificate Image (Optional)</label>
+                    <input type="file" id="certFile" accept="image/*">
+                </div>
+                
+                <button class="action-btn save-main-btn" onclick="saveNewRecord()">SAVE TRADEMARK</button>
+            </div>
+        </div>
+
+        <!-- SETTINGS VIEW -->
+        <div id="view-settings" class="page-view">
+            <div class="admin-box" style="display: block;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h3 style="margin:0;">ADMIN SETTINGS</h3>
+                    <button onclick="switchTab('verify')" style="background:none; border:none; font-size:16px; cursor:pointer; font-weight:bold;">×</button>
+                </div>
+                <p style="font-size:11px; color:#666; margin-bottom:15px;">Change your login email and password below:</p>
+                
+                <div class="form-group">
+                    <label>New Admin Email</label>
+                    <input type="email" id="newAdminEmail" placeholder="Enter new email">
+                </div>
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" id="newAdminPass" placeholder="Enter new password">
+                </div>
+                
+                <button class="action-btn save-main-btn" onclick="updateAdminCredentials()">UPDATE CREDENTIALS</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL POPUP -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeLoginModal()">×</button>
+            <h3>ADMIN LOGIN</h3>
+            <p>Admin permissions are verified by the database.</p>
+            <div class="form-group">
+                <label>Admin email</label>
+                <input type="email" id="adminEmail" placeholder="sorowar@gmail.com">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="adminPass" placeholder="••••••••">
+            </div>
+            <div id="loginError" style="font-size:11px; color:#a93226; margin-bottom:10px; display:none;">Invalid login credentials</div>
+            <button class="action-btn" style="background:#19382b; margin-top:5px;" onclick="verifyAdminLogin()">Admin Login</button>
+        </div>
+    </div>
+
+    <script>
+        let globalDatabase = {};
+
+        function getAdminCreds() {
+            return {
+                email: localStorage.getItem('admin_email') || "sorowar@gmail.com",
+                pass: localStorage.getItem('admin_pass') || "12345",
+                avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&h=100&q=80"
+            };
+        }
+
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        let existingLogoBase64 = '';
+        let existingCertBase64 = '';
+        
+        window.onload = async function() {
+            await loadGlobalData();
+            updateAuthUI();
+            const creds = getAdminCreds();
+            document.getElementById('newAdminEmail').value = creds.email;
+        };
+
+        async function loadGlobalData() {
+            try {
+                // data.json ফাইল থেকে ডেটা লোড করা
+                const res = await fetch('data.json');
+                globalDatabase = await res.json();
+            } catch(e) {
+                // যদি data.json না থাকে তবে ব্রাউজার লোকালেই সেভ থাকবে
+                const localData = localStorage.getItem('global_trademark_records_v1');
+                globalDatabase = localData ? JSON.parse(localData) : {};
+            }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            if(tab === 'verify') {
+                document.getElementById('view-verify').classList.add('active');
+                document.getElementById('navVerify').classList.add('active');
+                updateAuthUI();
+            } else if(tab === 'add') {
+                if(!isLoggedIn) { openLoginModal(); return; }
+                document.getElementById('view-add').classList.add('active');
+                document.getElementById('navAdd').classList.add('active');
+            } else if(tab === 'settings') {
+                if(!isLoggedIn) { openLoginModal(); return; }
+                document.getElementById('view-settings').classList.add('active');
+                document.getElementById('navSettings').classList.add('active');
+            }
+        }
+
+        function handleAuthClick() {
+            if(isLoggedIn) {
+                if(confirm('Are you sure you want to log out?')) {
+                    isLoggedIn = false;
+                    localStorage.setItem('isLoggedIn', 'false');
+                    updateAuthUI();
+                    clearSearch();
+                }
+            } else {
+                openLoginModal();
+            }
+        }
+
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function verifyAdminLogin() {
+            const email = document.getElementById('adminEmail').value.trim();
+            const pass = document.getElementById('adminPass').value.trim();
+            const creds = getAdminCreds();
+
+            if(email === creds.email && pass === creds.pass) {
+                isLoggedIn = true;
+                localStorage.setItem('isLoggedIn', 'true');
+                closeLoginModal();
+                updateAuthUI();
+                renderAdminHomeView();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function updateAdminCredentials() {
+            const newEmail = document.getElementById('newAdminEmail').value.trim();
+            const newPass = document.getElementById('newAdminPass').value.trim();
+
+            if(!newEmail || !newPass) {
+                alert('ইমেল এবং পাসওয়ার্ড খালি রাখা যাবে না!');
+                return;
+            }
+
+            localStorage.setItem('admin_email', newEmail);
+            localStorage.setItem('admin_pass', newPass);
+            alert('অ্যাডমিন ইমেল এবং পাসওয়ার্ড সফলভাবে আপডেট করা হয়েছে!');
+            switchTab('verify');
+        }
+
+        function updateAuthUI() {
+            const addBtn = document.getElementById('navAdd');
+            const settingsBtn = document.getElementById('navSettings');
+            const authBtn = document.getElementById('navAuthBtn');
+            const avatarImg = document.getElementById('adminAvatarImg');
+            const creds = getAdminCreds();
+
+            if(isLoggedIn) {
+                addBtn.style.display = 'block';
+                settingsBtn.style.display = 'block';
+                authBtn.innerText = 'Log out';
+                avatarImg.src = creds.avatar;
+                avatarImg.style.display = 'block';
+                renderAdminHomeView();
+            } else {
+                addBtn.style.display = 'none';
+                settingsBtn.style.display = 'none';
+                authBtn.innerText = 'Login';
+                avatarImg.style.display = 'none';
+                clearSearch();
+            }
+        }
+
+        function renderAdminHomeView() {
+            const resArea = document.getElementById('searchResultArea');
+            const keys = Object.keys(globalDatabase);
+
+            if(keys.length === 0) {
+                resArea.innerHTML = `
+                    <div class="result-container" style="text-align:center; padding:25px;">
+                        <div class="search-title" style="margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                            <span>— ADMIN RECORDS</span>
+                            <span style="background:#e8e4d5; border:1px solid #dcd8cc; padding:2px 8px; font-size:9px; color:#276749; font-weight:bold;">0 ADMIN RECORDS</span>
+                        </div>
+                        <div style="font-size:12px; color:#666; font-weight:500; margin-top:10px;">No records found. Click '+ Add' in the top menu to create records.</div>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div class="search-title" style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+                    <span>— SEARCH RESULTS</span>
+                    <span style="background:#f2f7f4; border:1px solid #c8d6ce; padding:2px 8px; font-size:9px; color:#276749; font-weight:bold;">${keys.length} ADMIN RECORDS</span>
+                </div>
+            `;
+
+            keys.forEach(key => {
+                let item = globalDatabase[key];
+                html += `
+                    <div class="result-container" style="margin-bottom:15px; margin-top:0;">
+                        <div class="result-top-header">
+                            ${item.logo ? `<img src="${item.logo}" class="brand-logo-img">` : `<div class="brand-logo-img" style="display:flex;align-items:center;justify-content:center;font-size:9px;color:#777;">NO LOGO</div>`}
+                            <div class="brand-heading">
+                                <h3>${item.brandName}</h3>
+                                <p>REGISTRATION: ${item.regNo}</p>
+                            </div>
+                        </div>
+                        <div class="status-badge">${item.status}</div>
+                        
+                        <div class="info-box"><label>Owner</label><span>${item.ownerName || 'N/A'}</span></div>
+                        <div class="info-box"><label>Class</label><span>${item.tmClass || 'N/A'}</span></div>
+                        <div class="info-box"><label>Jurisdiction</label><span>${item.jurisdiction || 'N/A'}</span></div>
+                        <div class="info-box"><label>Registration Date</label><span>${item.regDate || 'N/A'}</span></div>
+                        <div class="info-box"><label>Expiry Date</label><span>${item.expiryDate || 'N/A'}</span></div>
+
+                        ${item.legalNotice ? `<div class="legal-notice">${item.legalNotice}</div>` : ''}
+
+                        ${item.certificate ? `
+                            <div class="certificate-section">
+                                <div class="certificate-title">Trademark Certificate</div>
+                                <a href="${item.certificate}" target="_blank" class="cert-link">↗ Open / Download Certificate</a>
+                                <div><img src="${item.certificate}" class="cert-img-preview" alt="Certificate"></div>
+                            </div>
+                        ` : ''}
+
+                        <div class="admin-actions">
+                            <button class="edit-card-btn" onclick="editRecord('${item.regNo}')">✏️ Edit</button>
+                            <button class="delete-card-btn" onclick="deleteRecord('${item.regNo}')">🗑️ Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+            resArea.innerHTML = html;
+        }
+
+        function resetFormFields() {
+            document.getElementById('formTitleText').innerText = 'ADD TRADEMARK';
+            document.getElementById('regNo').value = '';
+            document.getElementById('regNo').disabled = false;
+            document.getElementById('brandName').value = '';
+            document.getElementById('ownerName').value = 'Sorowar Hossain';
+            document.getElementById('tmClass').value = '';
+            document.getElementById('jurisdiction').value = 'Bangladesh';
+            document.getElementById('regDate').value = '';
+            document.getElementById('expiryDate').value = '';
+            document.getElementById('logoFile').value = '';
+            document.getElementById('certFile').value = '';
+            existingLogoBase64 = '';
+            existingCertBase64 = '';
+        }
+
+        function editRecord(regNo) {
+            const item = globalDatabase[regNo];
+            if(!item) return;
+
+            document.getElementById('formTitleText').innerText = 'EDIT TRADEMARK';
+            document.getElementById('regNo').value = item.regNo;
+            document.getElementById('regNo').disabled = true;
+            document.getElementById('brandName').value = item.brandName || '';
+            document.getElementById('ownerName').value = item.ownerName || '';
+            document.getElementById('tmClass').value = item.tmClass || '';
+            document.getElementById('status').value = item.status || 'REGISTERED';
+            document.getElementById('jurisdiction').value = item.jurisdiction || '';
+            document.getElementById('regDate').value = item.regDate || '';
+            document.getElementById('expiryDate').value = item.expiryDate || '';
+            document.getElementById('legalNoticeText').value = item.legalNotice || '';
+            
+            existingLogoBase64 = item.logo || '';
+            existingCertBase64 = item.certificate || '';
+
+            switchTab('add');
+        }
+
+        function deleteRecord(regNo) {
+            if(confirm(`Are you sure you want to delete registration number ${regNo}?`)) {
+                delete globalDatabase[regNo];
+                localStorage.setItem('global_trademark_records_v1', JSON.stringify(globalDatabase));
+                alert('রেকর্ডটি ব্রাউজার থেকে মুছে ফেলা হয়েছে!');
+                renderAdminHomeView();
+            }
+        }
+
+        async function saveNewRecord() {
+            const regNo = document.getElementById('regNo').value.trim();
+            const brandName = document.getElementById('brandName').value.trim();
+            const ownerName = document.getElementById('ownerName').value.trim();
+            const tmClass = document.getElementById('tmClass').value.trim();
+            const jurisdiction = document.getElementById('jurisdiction').value.trim();
+            const regDate = document.getElementById('regDate').value.trim();
+            const expiryDate = document.getElementById('expiryDate').value.trim();
+            const status = document.getElementById('status').value;
+            const legalNotice = document.getElementById('legalNoticeText').value.trim();
+            const logoInput = document.getElementById('logoFile');
+            const certInput = document.getElementById('certFile');
+
+            if(!regNo || !brandName) {
+                alert('রেজিস্ট্রেশন নম্বর এবং ব্র্যান্ডের নাম আবশ্যক!');
+                return;
+            }
+
+            const readFileAsBase64 = (file) => {
+                return new Promise((resolve) => {
+                    if(!file) { resolve(''); return; }
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.readAsDataURL(file);
+                });
+            };
+
+            const newLogo = await readFileAsBase64(logoInput.files[0]);
+            const newCert = await readFileAsBase64(certInput.files[0]);
+
+            const newRec = {
+                regNo, brandName, ownerName, tmClass, jurisdiction, regDate, expiryDate, status, legalNotice,
+                logo: newLogo || existingLogoBase64,
+                certificate: newCert || existingCertBase64
+            };
+
+            globalDatabase[regNo] = newRec;
+            localStorage.setItem('global_trademark_records_v1', JSON.stringify(globalDatabase));
+
+            alert('ট্রেডমার্ক সেভ হয়েছে! স্থায়ীভাবে অনলাইন করার জন্য এই ডাটাটি data.json ফাইলে যোগ করুন।');
+            resetFormFields();
+            switchTab('verify');
+        }
+
+        function searchTrademark() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const resArea = document.getElementById('searchResultArea');
+
+            if(!query) {
+                if(isLoggedIn) { renderAdminHomeView(); } else { clearSearch(); }
+                return;
+            }
+
+            let item = null;
+            for(let key in globalDatabase) {
+                let r = globalDatabase[key];
+                if(r.regNo.toLowerCase() === query || 
+                   r.brandName.toLowerCase().includes(query) || 
+                   (r.ownerName && r.ownerName.toLowerCase().includes(query))) {
+                    item = r;
+                    break;
+                }
+            }
+
+            if(item) {
+                resArea.innerHTML = `
+                    <div class="search-title" style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+                        <span>— SEARCH RESULTS</span>
+                        <span style="background:#e8e4d5; border:1px solid #dcd8cc; padding:2px 8px; font-size:9px; color:#276749; font-weight:bold;">SEARCH COMPLETE</span>
+                    </div>
+                    <div class="result-container" style="margin-top:0;">
+                        <div class="result-top-header">
+                            ${item.logo ? `<img src="${item.logo}" class="brand-logo-img">` : `<div class="brand-logo-img" style="display:flex;align-items:center;justify-content:center;font-size:9px;color:#777;">NO LOGO</div>`}
+                            <div class="brand-heading">
+                                <h3>${item.brandName}</h3>
+                                <p>REGISTRATION: ${item.regNo}</p>
+                            </div>
+                        </div>
+                        <div class="status-badge">${item.status}</div>
+                        
+                        <div class="info-box"><label>Owner</label><span>${item.ownerName || 'N/A'}</span></div>
+                        <div class="info-box"><label>Class</label><span>${item.tmClass || 'N/A'}</span></div>
+                        <div class="info-box"><label>Jurisdiction</label><span>${item.jurisdiction || 'N/A'}</span></div>
+                        <div class="info-box"><label>Registration Date</label><span>${item.regDate || 'N/A'}</span></div>
+                        <div class="info-box"><label>Expiry Date</label><span>${item.expiryDate || 'N/A'}</span></div>
+
+                        ${item.legalNotice ? `<div class="legal-notice">${item.legalNotice}</div>` : ''}
+
+                        ${item.certificate ? `
+                            <div class="certificate-section">
+                                <div class="certificate-title">Trademark Certificate</div>
+                                <a href="${item.certificate}" target="_blank" class="cert-link">↗ Open / Download Certificate</a>
+                                <div><img src="${item.certificate}" class="cert-img-preview" alt="Certificate"></div>
+                            </div>
+                        ` : ''}
+
+                        ${isLoggedIn ? `
+                            <div class="admin-actions">
+                                <button class="edit-card-btn" onclick="editRecord('${item.regNo}')">✏️ Edit</button>
+                                <button class="delete-card-btn" onclick="deleteRecord('${item.regNo}')">🗑️ Delete</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            } else {
+                resArea.innerHTML = `
+                    <div class="result-container" style="text-align:center; padding:30px;">
+                        <div class="search-title" style="margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                            <span>— SEARCH RESULTS</span>
+                            <span style="background:#fae1df; border:1px solid #f5c6cb; padding:2px 8px; font-size:9px; color:#a93226; font-weight:bold;">NOT FOUND</span>
+                        </div>
+                        <p style="color:#a93226; font-weight:600; font-size:13px; margin-top:10px;">কোনো রেকর্ড পাওয়া যায়নি!</p>
+                    </div>
+                `;
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            if(isLoggedIn) {
+                renderAdminHomeView();
+            } else {
+                document.getElementById('searchResultArea').innerHTML = `
+                    <div class="result-container" style="text-align:center; padding:25px;">
+                        <div class="search-title" style="margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                            <span>— SEARCH RESULTS</span>
+                            <span style="background:#e8e4d5; border:1px solid #dcd8cc; padding:2px 8px; font-size:9px; color:#444; font-weight:bold;">SEARCH READY</span>
+                        </div>
+                        <div style="font-size:12px; color:#666; font-weight:500; margin-top:10px;">Enter a trademark name or registration number above to verify.</div>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
